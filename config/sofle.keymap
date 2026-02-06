@@ -61,48 +61,45 @@
             #binding-cells = <0>;
             continue-list = <POUND MINUS BACKSPACE UNDERSCORE>;
         };
-
-        /* Autoshift hold-tap behavior */
         as_ht: autoshift_hold_tap {
             compatible = "zmk,behavior-hold-tap";
             label = "AUTOSHIFT_HOLD_TAP";
             #binding-cells = <2>;
 
-            /* Your requested timeout */
             tapping-term-ms = <147>;
 
-            /* Typical choice for autoshift */
             flavor = "tap-preferred";
 
-            /* tap = shifted macro, hold = plain key */
+            // tap = shifted macro, hold = plain key
             bindings = <&shifted>, <&kp>;
         };
     };
-
     macros {
-    shifted: macro_shifted_kp {
-        compatible = "zmk,behavior-macro-one-param";
-        label = "MACRO_SHIFTED_KP";
-        #binding-cells = <1>;
-        bindings =
-            <&macro_press &kp LSHFT>,
-            <&macro_param_1to1 &macro_tap &kp MACRO_PLACEHOLDER>,
-            <&macro_release &kp LSHFT>;
-    };
+        shifted: macro_shifted_kp {
+            compatible = "zmk,behavior-macro-one-param";
+            label = "MACRO_SHIFTED_KP";
+            #binding-cells = <1>;
 
-    as: autoshift {
-        compatible = "zmk,behavior-macro-one-param";
-        label = "AUTOSHIFT";
-        #binding-cells = <1>;
-        bindings =
-            <&macro_press &as_ht>,
-            <&macro_param_1to2>,
-            <&macro_pause_for_release>,
-            <&macro_param_1to1 &macro_param_1to2>,
-            <&macro_release &as_ht>;
-    };
-};
+            bindings =
+                <&macro_press &kp LSHFT>,
+                <&macro_param_1to1 &macro_tap &kp MACRO_PLACEHOLDER>,
+                <&macro_release &kp LSHFT>;
+        };
 
+        as: autoshift {
+            compatible = "zmk,behavior-macro-one-param";
+            label = "AUTOSHIFT";
+
+            #binding-cells = <1>;
+
+            // Feed the same keycode to both binding cells of &as_ht
+            bindings =
+                <&macro_press &as_ht>,
+                <&macro_param_1to2>,
+                <&macro_pause_for_release>,
+                <&macro_release &as_ht>;
+        };
+    };
 
     keymap {
         compatible = "zmk,keymap";
@@ -118,11 +115,11 @@
             //               | GUI | ALT  | CTRL | LOWER|  ENTER |  | SPACE | RAISE| CTRL  | ALT   | GUI  |
 
             bindings = <
-&gresc            &as N1   &as N2   &as N3   &as N4   &as N5                                   &as N6   &as N7   &as N8   &as N9   &as N0   &kp MINUS
-&kp TAB           &as Q    &as W    &as E    &as R    &as T                                    &as Y    &as U    &as I    &as O    &as P    &kp BSPC
-&kp LEFT_SHIFT    &as A    &as S    &as D    &as F    &as G                                    &as H    &as J    &as K    &as L    &kp SEMI &kp SQT
-&kp LEFT_CONTROL  &as Z    &as X    &as C    &as V    &as B    &kp C_MUTE      &kp C_PLAY_PAUSE  &as N    &as M    &kp COMMA &kp DOT  &kp FSLH &kp RSHFT
-                          &kp LGUI  &kp LALT &kp LCTRL &mo LOWER &kp SPACE     &kp ENTER         &mo RAISE &kp RCTRL &kp LALT &kp RGUI
+&gresc            &kp N1  &kp N2    &kp N3    &kp N4     &kp N5                                     &kp N6     &kp N7     &kp N8     &kp N9    &kp N0    &kp MINUS
+&kp TAB           &kp Q   &kp W     &kp E     &kp R      &kp T                                      &kp Y      &kp U      &kp I      &kp O     &kp P     &kp BSPC
+&kp LEFT_SHIFT    &kp A   &kp S     &kp D     &kp F      &kp G                                      &kp H      &kp J      &kp K      &kp L     &kp SEMI  &kp SQT
+&kp LEFT_CONTROL  &kp Z   &kp X     &kp C     &kp V      &kp B      &kp C_MUTE    &kp C_PLAY_PAUSE  &kp N      &kp M      &kp COMMA  &kp DOT   &kp FSLH  &kp RSHFT
+                          &kp LGUI  &kp LALT  &kp LCTRL  &mo LOWER  &kp SPACE     &kp ENTER         &mo RAISE  &kp RCTRL  &kp LALT   &kp RGUI
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp UP DOWN>;
@@ -184,7 +181,7 @@
             display-name = "System";
             bindings = <
 &bt BT_CLR_ALL     &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                  &none  &none  &none  &none  &none  &none
-&ext_power EP_TOG  &none         &none         &none         &none         &studio_unlock                 &none  &none  &none  &none  &none  &none
+&ext_power EP_TOG  &none         &none         &none         &none         &studio_unlock                         &none  &none  &none  &none  &none  &none
 &none              &none         &none         &none         &none         &none                         &none  &none  &none  &none  &none  &none
 &none              &none         &none         &none         &none         &caps_word    &none    &none  &none  &none  &none  &none  &none  &none
                                  &none         &none         &none         &none         &none    &none  &none  &none  &none  &none
@@ -194,4 +191,3 @@
         };
     };
 };
-
